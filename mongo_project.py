@@ -82,6 +82,16 @@ def add_record():
         print("Error accessing the database")
 
 
+def find_record():
+    """Uses result of helper function get_record() to find document"""
+    doc = get_record()
+    if doc:
+        print("")
+        for k,v in doc.items():
+            if k != "_id":
+                print(k.capitalize() + ": " + v.capitalize())
+
+
 def main_loop():
     """Define what to do when each option pressed"""
     while True:
@@ -89,7 +99,7 @@ def main_loop():
         if option == "1":
             add_record()
         elif option == "2":
-            print("You have selected option 2")
+            find_record()
         elif option == "3":
             print("You have selected option 3")
         elif option == "4":
