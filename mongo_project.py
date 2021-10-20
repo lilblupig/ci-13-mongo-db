@@ -1,17 +1,20 @@
+# Import dependencies
 import os
 import pymongo
 
-
+# Import sensitive data
 if os.path.exists("env.py"):
     import env
 
 
+# Establish variables for database connection
 MONGO_URI = os.environ.get("MONGO_URI")
 DATABASE = "myFirstDB"
 COLLECTION = "celebrities"
 
 
 def mongo_connect(url):
+    """Connect to MongoDB"""
     try:
         conn = pymongo.MongoClient(url)
         return conn
@@ -20,6 +23,7 @@ def mongo_connect(url):
 
 
 def show_menu():
+    """Show the menu for CRUD operations in the terminal"""
     print("")
     print("1: Add a record")
     print("2: Find a record by name")
@@ -31,11 +35,59 @@ def show_menu():
     return option
 
 
+def get_record():
+    """Helper function for Read, Update and Delete functions"""
+    print("")
+    first = input("Enter first name > ")
+    last = input("Enter last name > ")
+
+    try:
+        doc = coll.find_one({"first": first.lower(), "last": last.lower()})
+    except:
+        print("Error accessing the database")
+
+    if not doc:
+        print("")
+        print("Error: no results found")
+
+    return doc
+
+
+def add_record():
+    """Function called when option 1 chosen in the menu"""
+    print("")
+    first = input("Enter first name > ")
+    last = input("Enter last name > ")
+    dob = input("Enter date of birth > ")
+    gender = input("Enter gender > ")
+    hair_color = input("Enter hair colour > ")
+    occupation = input("Enter occupation > ")
+    nationality = input("Enter nationality > ")
+
+    new_doc = {
+        "first": first.lower(),
+        "last": last.lower(),
+        "dob": dob,
+        "gender": gender.lower(),
+        "hair_color": hair_color.lower(),
+        "occupation": occupation.lower(),
+        "nationality": nationality.lower()
+    }
+
+    try:
+        coll.insert(new_doc)
+        print("")
+        print("Document inserted")
+    except:
+        print("Error accessing the database")
+
+
 def main_loop():
+    """Define what to do when each option pressed"""
     while True:
         option = show_menu()
         if option == "1":
-            print("You have selected option 1")
+            add_record()
         elif option == "2":
             print("You have selected option 2")
         elif option == "3":
@@ -48,6 +100,7 @@ def main_loop():
         else:
             print("Invalid option")
         print("")
+
 
 conn = mongo_connect(MONGO_URI)
 
