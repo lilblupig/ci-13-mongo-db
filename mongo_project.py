@@ -1,3 +1,5 @@
+"""Run CRUD front end in terminal for Celebrities database"""
+
 # Import dependencies
 import os
 import pymongo
@@ -87,7 +89,7 @@ def find_record():
     doc = get_record()
     if doc:
         print("")
-        for k,v in doc.items():
+        for k, v in doc.items():
             if k != "_id":
                 print(k.capitalize() + ": " + v.capitalize())
 
@@ -98,7 +100,7 @@ def edit_record():
     if doc:
         update_doc = {}
         print("")
-        for k,v in doc.items():
+        for k, v in doc.items():
             if k != "_id":
                 update_doc[k] = input(k.capitalize() + " [" + v + "] > ")
 
@@ -113,16 +115,17 @@ def edit_record():
 
 
 def delete_record():
-    """Uses result of helper function get_record() to find and delete document"""
+    """Uses result of helper function get_record() to find and delete record"""
     doc = get_record()
     if doc:
         print("")
-        for k,v in doc.items():
+        for k, v in doc.items():
             if k != "_id":
                 print(k.capitalize() + ": " + v.capitalize())
-        
+
         print("")
-        confirmation = input("Is this the document you want to delete?\n Y or N > ")
+        confirmation = input(
+            "Is this the document you want to delete?\n Y or N > ")
         print("")
 
         if confirmation.lower() == "y":
